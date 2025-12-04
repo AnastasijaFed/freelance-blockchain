@@ -3,9 +3,11 @@ import Navbar from "./components/Navbar";
 import WelcomeCard from "./components/WelcomeCard";
 import NewJobCard from "./components/NewJobCard";
 import { N } from "ethers";
+import "./App.css";
 
 function App() {
   const [account, setAccount] = useState(null);
+  const [role, setRole] = useState("client");
 
   const connectWallet = async () => {
     if (!window.ethereum) {
@@ -23,7 +25,7 @@ function App() {
     }
   };
   const disconnectWallet = () => {
-  setAccount(null);                 // clear account from state
+  setAccount(null);              
   console.log("Disconnected");
 };
 
@@ -40,9 +42,35 @@ function App() {
       <WelcomeCard connectWallet={connectWallet} />
     ) : (
       <div className="app-content">
-        <NewJobCard />
-      </div>
-    )}
+         <div className="role-toggle-wrapper">
+            <div className="role-toggle">
+              <button
+                className={`role-btn ${role === "client" ? "active" : "inactive"}`}
+                onClick={() => setRole("client")}
+              >
+                Client
+              </button>
+              <button
+                className={`role-btn ${role === "freelancer" ? "active" : "inactive"}`}
+                onClick={() => setRole("freelancer")}
+              >
+                Freelancer
+              </button>
+            </div>
+          </div>
+          {role === "client" ? (
+            <NewJobCard />
+          ) : (
+            <div style={{ padding: "2rem 4rem" }}>
+              <h2>cia freelanceris ka mato</h2>
+              
+            </div>
+   
+          )}
+        </div>
+      )}
+       
+      
     </>
   );
 }

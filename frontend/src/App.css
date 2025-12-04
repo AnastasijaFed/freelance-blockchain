@@ -5,6 +5,45 @@ html, body {
     font-family: 'Arial', sans-serif;
     overflow-x: hidden;
 }
+.app-content {
+  background: #f3f4f6;
+  min-height: calc(100vh - 70px); 
+}
+
+
+.role-toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0 1rem;
+}
+
+.role-toggle {
+  display: inline-flex;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 4px;
+  box-shadow: 0 6px 18px rgba(148, 163, 184, 0.35);
+}
+
+.role-btn {
+  border: none;
+  padding: 8px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.role-btn.active {
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: #ffffff;
+}
+
+.role-btn.inactive {
+  color: #4b5563;
+}
 
 
 
