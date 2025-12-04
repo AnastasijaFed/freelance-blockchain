@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import WelcomeCard from "./components/WelcomeCard";
+import NewJobCard from "./components/NewJobCard";
+import { N } from "ethers";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -38,7 +40,7 @@ function App() {
       <WelcomeCard connectWallet={connectWallet} />
     ) : (
       <div className="app-content">
-        
+        <NewJobCard />
       </div>
     )}
     </>

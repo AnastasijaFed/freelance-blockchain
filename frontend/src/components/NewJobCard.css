@@ -1,0 +1,115 @@
+.new-job-container {
+  padding: 2rem 4rem;
+  background: #f3f4f6;            /* light gray background */
+  display: flex;
+  justify-content: center;
+}
+
+.new-job-card {
+  max-width: 900px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 2rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+}
+.new-job-card h2 {
+  margin-bottom: 1.5rem;
+  font-size: 22px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.create-job-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field.full-width {
+  flex-basis: 100%;
+}
+
+.form-field label {
+  font-size: 14px;
+  margin-bottom: 0.35rem;
+  color: #374151;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.form-field input,
+.form-field textarea {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 0.7rem 0.9rem;
+  font-size: 14px;
+  outline: none;
+  background: #f9fafb;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.4);
+  background: #ffffff;
+}
+
+.gas-info {
+  background: #eef2ff;
+  padding: 0.9rem 1.1rem;
+  border-radius: 16px;
+  font-size: 14px;
+  color: #4b5563;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.gas-info span {
+  font-weight: 600;
+}
+
+.primary-submit-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  font-size: 15px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primary-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(79, 70, 229, 0.6);
+}
+
+.plus-icon {
+  font-size: 18px;
+}
