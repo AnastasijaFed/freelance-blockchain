@@ -1,0 +1,189 @@
+/* src/components/Jobs/JobDetailsModal.css */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.modal-card {
+  max-width: 720px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 1.8rem 2rem 1.6rem;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.4);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+.progress-card {
+  background: #f9fafb;
+  border-radius: 18px;
+  padding: 1rem 1.2rem 0.9rem;
+  margin-bottom: 1.4rem;
+}
+
+.progress-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+}
+
+.progress-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prog-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.prog-step {
+  display: flex;
+  align-items: center;
+}
+
+.prog-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 16px;
+}
+
+.prog-label {
+  margin-left: 0.4rem;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.prog-connector {
+  height: 3px;
+  flex: 1;
+  margin: 0 0.4rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.prog-done .prog-icon {
+  border-color: #22c55e;
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.prog-current .prog-icon {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.prog-done + .prog-connector,
+.prog-current + .prog-connector {
+  background: linear-gradient(90deg, #22c55e, #f59e0b);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.info-box {
+  border-radius: 16px;
+  padding: 0.7rem 0.9rem;
+  font-size: 14px;
+}
+
+.info-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.client {
+  background: #eef2ff;
+}
+
+.freelancer {
+  background: #f5f3ff;
+}
+
+.amount {
+  background: #ecfdf5;
+}
+
+.deadline {
+  background: #fef9c3;
+}
+
+.status-message {
+  background: #f5f5f5;
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+/* footer buttons */
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.approve-long,
+.dispute-long,
+.close-btn {
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.approve-long {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.dispute-long {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.close-btn {
+  background: #e5e7eb;
+  color: #111827;
+}

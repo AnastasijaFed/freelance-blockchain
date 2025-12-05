@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Navbar from "./components/Navbar";
-import WelcomeCard from "./components/WelcomeCard";
-import NewJobCard from "./components/NewJobCard";
+import Navbar from "./components/Navbar/Navbar";
+import WelcomeCard from "./components/WelcomeCard/WelcomeCard";
+import NewJobCard from "./components/NewJobCard/NewJobCard";
 import { N } from "ethers";
 import "./App.css";
+import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -59,7 +60,7 @@ function App() {
             </div>
           </div>
           {role === "client" ? (
-            <NewJobCard />
+            <ClientDashboard />
           ) : (
             <div style={{ padding: "2rem 4rem" }}>
               <h2>cia freelanceris ka mato</h2>

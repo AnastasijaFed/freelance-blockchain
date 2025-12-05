@@ -1,0 +1,5 @@
+.client-dashboard {
+  padding: 2rem 4rem;
+  background: #f3f4f6;
+  min-height: calc(100vh - 70px); 
+}
