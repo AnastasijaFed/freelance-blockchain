@@ -90,21 +90,17 @@
   background: #e5e7eb;
 }
 
-.prog-done .prog-icon {
+.prog-done .prog-icon, .prog-current .prog-icon {
   border-color: #22c55e;
   background: #dcfce7;
   color: #16a34a;
 }
 
-.prog-current .prog-icon {
-  border-color: #f59e0b;
-  background: #fef3c7;
-  color: #d97706;
-}
+
 
 .prog-done + .prog-connector,
 .prog-current + .prog-connector {
-  background: linear-gradient(90deg, #22c55e, #f59e0b);
+  background: #22c55e;
 }
 
 .info-grid {

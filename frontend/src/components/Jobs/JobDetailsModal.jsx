@@ -26,7 +26,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </button>
         </div>
 
-        {/* Progress */}
+ 
         <div className="progress-card">
           <h3>Progress</h3>
           <div className="progress-line">
@@ -54,7 +54,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </div>
         </div>
 
-        {/* Info grid */}
+  
         <div className="info-grid">
           <div className="info-box client">
             <span className="info-label">Client</span>

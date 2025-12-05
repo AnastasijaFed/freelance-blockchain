@@ -1,4 +1,4 @@
-// src/components/Jobs/JobCard.jsx
+
 import React from "react";
 import "./Jobs.css";
 

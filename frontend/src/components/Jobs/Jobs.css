@@ -1,4 +1,4 @@
-/* src/components/Jobs/Jobs.css */
+
 
 .jobs-section {
   margin-top: 2.5rem;
@@ -44,7 +44,6 @@
   cursor: pointer;
 }
 
-/* grid */
 
 .jobs-grid {
   display: grid;
@@ -52,7 +51,7 @@
   gap: 1.5rem;
 }
 
-/* job card */
+
 
 .job-card {
   background: #ffffff;
