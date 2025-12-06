@@ -3,21 +3,25 @@ import "./FreelancerDashboard.css";
 import JobList from "../Jobs/JobList";
 
 const FreelancerDashboard = ({ jobs, account, onAcceptJob, onSubmitWork }) => {
+  // 1. Laisvi darbai (tikriname ar job.status yra "Created")
   const availableJobs = jobs.filter((job) => job.status === "Created");
 
+  // 2. Mano darbai
+  // Rodome darbus, kurie yra priimti/priduoti/patvirtinti
+  // IR kurių freelancer adresas sutampa su prisijungusiu account
   const myActiveJobs = jobs.filter(
     (job) =>
       (job.status === "Accepted" ||
         job.status === "Submitted" ||
         job.status === "Approved") &&
       job.freelancer &&
+      account &&
       job.freelancer.toLowerCase() === account.toLowerCase()
   );
 
   return (
     <div className="freelancer-dashboard">
-      {" "}
-      {{}}{" "}
+      {/* Pirma sekcija: Laisvi darbai */}
       <div className="freelancer-section">
         <h2>Available Jobs (Marketplace)</h2>
         {availableJobs.length === 0 ? (
@@ -32,6 +36,8 @@ const FreelancerDashboard = ({ jobs, account, onAcceptJob, onSubmitWork }) => {
           />
         )}
       </div>
+
+      {/* Antra sekcija: Mano aktyvūs darbai */}
       <div className="freelancer-section">
         <h2>My Active Projects</h2>
         {myActiveJobs.length === 0 ? (
