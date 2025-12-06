@@ -1,19 +1,23 @@
 import React from "react";
 import "./Jobs.css";
-import NewJobCard from "../NewJobCard/NewJobCard";
 import JobCard from "./JobCard";
 
-
-const JobList = ({ jobs, onViewDetails, onApprove, onDispute }) => {
+const JobList = ({
+  jobs,
+  role,
+  onViewDetails,
+  onApprove,
+  onDispute,
+  onAcceptJob,
+  onSubmitWork,
+}) => {
   return (
     <div className="jobs-section">
+      {}
       <div className="jobs-header">
         <div className="jobs-title">
-          <h2>My Posted Jobs</h2>
+          <h2>{role === "freelancer" ? "Jobs" : "My Posted Jobs"}</h2>
           <span className="jobs-count">{jobs.length}</span>
-        </div>
-        <div className="jobs-filter">
-          <button className="filter-btn">All Status ▾</button>
         </div>
       </div>
 
@@ -22,9 +26,12 @@ const JobList = ({ jobs, onViewDetails, onApprove, onDispute }) => {
           <JobCard
             key={job.id}
             job={job}
+            role={role}
             onViewDetails={onViewDetails}
             onApprove={onApprove}
             onDispute={onDispute}
+            onAcceptJob={onAcceptJob}
+            onSubmitWork={onSubmitWork}
           />
         ))}
       </div>

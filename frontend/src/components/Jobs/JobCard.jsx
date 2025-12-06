@@ -1,8 +1,15 @@
-
 import React from "react";
 import "./Jobs.css";
 
-const JobCard = ({ job, onViewDetails, onApprove, onDispute }) => {
+const JobCard = ({
+  job,
+  role,
+  onViewDetails,
+  onApprove,
+  onDispute,
+  onAcceptJob,
+  onSubmitWork,
+}) => {
   const { id, title, description, freelancer, amountEth, deadline, status } =
     job;
 
@@ -20,7 +27,12 @@ const JobCard = ({ job, onViewDetails, onApprove, onDispute }) => {
       <div className="job-meta">
         <div className="job-meta-item">
           <span className="meta-label">Freelancer</span>
-          <span className="meta-value">{freelancer}</span>
+          {/* Jei freelanceris dar nepriskirtas, rodom brūkšnelį */}
+          <span className="meta-value">
+            {freelancer
+              ? `${freelancer.slice(0, 6)}...${freelancer.slice(-4)}`
+              : "—"}
+          </span>
         </div>
         <div className="job-meta-item">
           <span className="meta-label">Payment</span>
@@ -33,26 +45,48 @@ const JobCard = ({ job, onViewDetails, onApprove, onDispute }) => {
       </div>
 
       <div className="job-card-footer">
-        <button className="link-btn" onClick={() => onViewDetails(job)}>
-          View Details
-        </button>
+        {}
+        {onViewDetails && (
+          <button className="link-btn" onClick={() => onViewDetails(job)}>
+            View Details
+          </button>
+        )}
 
         <div className="action-buttons">
-          {status === "Submitted" && (
+          {/* Klientas */}
+          {role !== "freelancer" && status === "Submitted" && (
             <>
-              <button
-                className="approve-btn"
-                onClick={() => onApprove(id)}
-              >
+              <button className="approve-btn" onClick={() => onApprove(id)}>
                 Approve
               </button>
-              <button
-                className="dispute-btn"
-                onClick={() => onDispute(id)}
-              >
+              <button className="dispute-btn" onClick={() => onDispute(id)}>
                 Dispute
               </button>
             </>
+          )}
+
+          {/* Freelancer'is */}
+
+          {}
+          {role === "freelancer" && status === "Created" && (
+            <button
+              className="approve-btn"
+              style={{ background: "#4f46e5" }}
+              onClick={() => onAcceptJob(id)}
+            >
+              Accept Job
+            </button>
+          )}
+
+          {}
+          {role === "freelancer" && status === "Accepted" && (
+            <button
+              className="approve-btn"
+              style={{ background: "#10b981" }}
+              onClick={() => onSubmitWork(id)}
+            >
+              Submit Work
+            </button>
           )}
         </div>
       </div>
