@@ -26,33 +26,36 @@ function App() {
     }
   };
   const disconnectWallet = () => {
-  setAccount(null);              
-  console.log("Disconnected");
-};
+    setAccount(null);
+    console.log("Disconnected");
+  };
 
   return (
     <>
-         <Navbar
+      <Navbar
         account={account}
         connectWallet={connectWallet}
         disconnectWallet={disconnectWallet}
       />
 
-
-       {!account ? (
-      <WelcomeCard connectWallet={connectWallet} />
-    ) : (
-      <div className="app-content">
-         <div className="role-toggle-wrapper">
+      {!account ? (
+        <WelcomeCard connectWallet={connectWallet} />
+      ) : (
+        <div className="app-content">
+          <div className="role-toggle-wrapper">
             <div className="role-toggle">
               <button
-                className={`role-btn ${role === "client" ? "active" : "inactive"}`}
+                className={`role-btn ${
+                  role === "client" ? "active" : "inactive"
+                }`}
                 onClick={() => setRole("client")}
               >
                 Client
               </button>
               <button
-                className={`role-btn ${role === "freelancer" ? "active" : "inactive"}`}
+                className={`role-btn ${
+                  role === "freelancer" ? "active" : "inactive"
+                }`}
                 onClick={() => setRole("freelancer")}
               >
                 Freelancer
@@ -64,14 +67,10 @@ function App() {
           ) : (
             <div style={{ padding: "2rem 4rem" }}>
               <h2>cia freelanceris ka mato</h2>
-              
             </div>
-   
           )}
         </div>
       )}
-       
-      
     </>
   );
 }

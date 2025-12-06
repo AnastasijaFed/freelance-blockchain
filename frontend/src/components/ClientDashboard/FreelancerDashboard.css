@@ -1,0 +1,31 @@
+.freelancer-dashboard {
+  padding: 2rem 4rem;
+  background: #f3f4f6;
+  min-height: calc(100vh - 70px);
+}
+
+.freelancer-dashboard h2 {
+  margin-bottom: 1rem;
+  color: #111827;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.freelancer-section {
+  margin-bottom: 3rem;
+}
+
+.no-jobs-message {
+  color: #6b7280;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px dashed #e5e7eb;
+}
+
+@media (max-width: 640px) {
+  .freelancer-dashboard {
+    padding: 1.5rem 1rem;
+  }
+}
