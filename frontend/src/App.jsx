@@ -7,26 +7,17 @@ import "./App.css";
 import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
 import FreelancerDashboard from "./components/FreelancerDashboard/FreelancerDashboard";
 
+// TAI YRA TAVO "BENDRA DUOMENŲ BAZĖ"
 const initialJobs = [
   {
     id: 1,
     title: "Build Landing Page",
     description: "Create a modern landing page.",
-    freelancer: "",
+    freelancer: "", // Laukia freelancerio
     amountEth: "2.5",
     deadline: "20/12/2025",
-    status: "Created",
-    submission: null, // Čia saugosime atliktą darbą
-  },
-  {
-    id: 2,
-    title: "Smart Contract Audit",
-    description: "Audit needed.",
-    freelancer: "0x123...456",
-    amountEth: "5.0",
-    deadline: "25/12/2025",
-    status: "Accepted",
-    submission: null,
+    status: "Created", // Pradinis statusas
+    submission: null, // Nėra nuorodos
   },
 ];
 
@@ -65,29 +56,12 @@ function App() {
 
   const disconnectWallet = () => setAccount(null);
 
+  // --- LOGIKA ---
+
   const handleCreateJob = (newJob) => {
     setJobs((prev) => [{ ...newJob, submission: null }, ...prev]);
   };
 
-  // Klientas sumoka
-  const handleApprove = (jobId) => {
-    setJobs((prev) =>
-      prev.map((job) =>
-        job.id === jobId ? { ...job, status: "Approved" } : job
-      )
-    );
-    alert("Payment sent to freelancer! 💸");
-  };
-
-  const handleDispute = (jobId) => {
-    setJobs((prev) =>
-      prev.map((job) =>
-        job.id === jobId ? { ...job, status: "Disputed" } : job
-      )
-    );
-  };
-
-  // Freelancerio funkcijos
   const handleAcceptJob = (jobId) => {
     setJobs((prev) =>
       prev.map((job) =>
@@ -98,13 +72,29 @@ function App() {
     );
   };
 
-  // Čia atnaujinimas: priimame submissionLink
   const handleSubmitWork = (jobId, submissionLink) => {
     setJobs((prev) =>
       prev.map((job) =>
         job.id === jobId
           ? { ...job, status: "Submitted", submission: submissionLink }
           : job
+      )
+    );
+  };
+
+  const handleApprove = (jobId) => {
+    setJobs((prev) =>
+      prev.map((job) =>
+        job.id === jobId ? { ...job, status: "Approved" } : job
+      )
+    );
+    alert("Funds released to Freelancer! 💸");
+  };
+
+  const handleDispute = (jobId) => {
+    setJobs((prev) =>
+      prev.map((job) =>
+        job.id === jobId ? { ...job, status: "Disputed" } : job
       )
     );
   };
@@ -144,14 +134,14 @@ function App() {
 
           {role === "client" ? (
             <ClientDashboard
-              jobs={jobs}
+              jobs={jobs} // SIUNČIAME BENDRA SĄRAŠĄ
               onCreateJob={handleCreateJob}
               onApprove={handleApprove}
               onDispute={handleDispute}
             />
           ) : (
             <FreelancerDashboard
-              jobs={jobs}
+              jobs={jobs} // SIUNČIAME TĄ PATĮ SĄRAŠĄ
               account={account}
               onAcceptJob={handleAcceptJob}
               onSubmitWork={handleSubmitWork}

@@ -1,4 +1,3 @@
-
 import React from "react";
 import "./JobDetailsModal.css";
 
@@ -7,8 +6,18 @@ const steps = ["Created", "Accepted", "Submitted", "Approved"];
 const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
   if (!job) return null;
 
-  const { id, title, client, freelancer, amountEth, deadline, status } = {
-    client: "0x742d...0bEb", //KOL KAS SITOJ VIETOJ IRGI HARDCODINAM KOL NERA BACKO JOKIO
+  // Hardcodinam client adresą, kol nėra back-end
+  const {
+    id,
+    title,
+    client,
+    freelancer,
+    amountEth,
+    deadline,
+    status,
+    submission,
+  } = {
+    client: "0x742d...0bEb",
     ...job,
   };
 
@@ -26,7 +35,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </button>
         </div>
 
- 
+        {/* Progress Bar */}
         <div className="progress-card">
           <h3>Progress</h3>
           <div className="progress-line">
@@ -54,7 +63,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </div>
         </div>
 
-  
+        {/* Info Grid */}
         <div className="info-grid">
           <div className="info-box client">
             <span className="info-label">Client</span>
@@ -62,7 +71,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </div>
           <div className="info-box freelancer">
             <span className="info-label">Freelancer</span>
-            <span className="info-value">{freelancer}</span>
+            <span className="info-value">{freelancer || "Not assigned"}</span>
           </div>
           <div className="info-box amount">
             <span className="info-label">Payment Amount</span>
@@ -74,9 +83,40 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </div>
         </div>
 
+        {/* NAUJA: Jei yra pateiktas darbas (Submission), rodome jį */}
+        {submission && (
+          <div
+            style={{
+              background: "#f0fdf4",
+              padding: "1rem",
+              borderRadius: "12px",
+              border: "1px solid #bbf7d0",
+              marginBottom: "1rem",
+              marginTop: "0.5rem",
+            }}
+          >
+            <h4 style={{ margin: "0 0 5px 0", color: "#166534" }}>
+              Submission from Freelancer:
+            </h4>
+            <a
+              href={submission}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                color: "#16a34a",
+                textDecoration: "underline",
+                wordBreak: "break-all",
+              }}
+            >
+              {submission}
+            </a>
+          </div>
+        )}
+
+        {/* Status Message */}
         <div className="status-message">
           {status === "Submitted"
-            ? "The freelancer has submitted their work. Please review and approve or open a dispute."
+            ? "The freelancer has submitted their work. Please review the submission above and Approve or Dispute."
             : status === "Approved"
             ? "This job has been approved and funds have been released."
             : status === "Disputed"
@@ -84,19 +124,14 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
             : `Current status: ${status}.`}
         </div>
 
+        {/* Footer Buttons */}
         <div className="modal-footer">
           {status === "Submitted" && (
             <>
-              <button
-                className="approve-long"
-                onClick={() => onApprove(id)}
-              >
-                Approve &amp; Release Funds
+              <button className="approve-long" onClick={() => onApprove(id)}>
+                Approve & Release Funds
               </button>
-              <button
-                className="dispute-long"
-                onClick={() => onDispute(id)}
-              >
+              <button className="dispute-long" onClick={() => onDispute(id)}>
                 Dispute
               </button>
             </>

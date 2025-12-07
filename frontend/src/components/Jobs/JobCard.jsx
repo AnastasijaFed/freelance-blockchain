@@ -20,9 +20,7 @@ const JobCard = ({
     status,
     submission,
   } = job;
-
-  // Saugome įvedamą nuorodą/failo pavadinimą lokaliai
-  const [submissionLink, setSubmissionLink] = useState("");
+  const [linkInput, setLinkInput] = useState("");
 
   return (
     <div className="job-card">
@@ -35,8 +33,9 @@ const JobCard = ({
 
       <p className="job-description">{description}</p>
 
-      {/* Jei darbas priduotas, rodome nuorodą */}
-      {submission && (
+      {/* --- 2 PUNKTAS: Nuorodos rodymas --- */}
+      {/* Rodome TIK jei darbas priduotas (Submitted) arba patvirtintas (Approved) */}
+      {(status === "Submitted" || status === "Approved") && submission && (
         <div
           style={{
             background: "#f0fdf4",
@@ -47,8 +46,18 @@ const JobCard = ({
             marginBottom: "10px",
           }}
         >
-          <strong>📎 Submission:</strong>{" "}
-          <a href="#" style={{ color: "#16a34a" }}>
+          <strong style={{ color: "#166534" }}>📎 Submitted Work:</strong>
+          <br />
+          <a
+            href={
+              submission.startsWith("http")
+                ? submission
+                : `https://${submission}`
+            }
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#16a34a", wordBreak: "break-all" }}
+          >
             {submission}
           </a>
         </div>
@@ -74,6 +83,7 @@ const JobCard = ({
       </div>
 
       <div className="job-card-footer">
+        {/* View Details mato visi */}
         {onViewDetails && (
           <button className="link-btn" onClick={() => onViewDetails(job)}>
             View Details
@@ -82,10 +92,16 @@ const JobCard = ({
 
         <div
           className="action-buttons"
-          style={{ flexDirection: "column", alignItems: "flex-end" }}
+          style={{
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: "10px",
+            width: "100%",
+          }}
         >
-          {/* --- KLIENTO VEIKSMAI --- */}
-          {role !== "freelancer" && status === "Submitted" && (
+          {/* --- KLIENTO MYGTUKAI --- */}
+          {/* 4 PUNKTAS: Klientas mato "Pay" tik kai darbas PRIDUOTAS (Submitted) */}
+          {role === "client" && status === "Submitted" && (
             <div style={{ display: "flex", gap: "8px" }}>
               <button className="approve-btn" onClick={() => onApprove(id)}>
                 Approve & Pay
@@ -96,9 +112,9 @@ const JobCard = ({
             </div>
           )}
 
-          {/* --- FREELANCERIO VEIKSMAI --- */}
+          {/* --- FREELANCERIO MYGTUKAI --- */}
 
-          {/* 1. Laisvas darbas -> Priimti */}
+          {/* A. Jei darbas naujas -> "Accept" */}
           {role === "freelancer" && status === "Created" && (
             <button
               className="approve-btn"
@@ -109,28 +125,26 @@ const JobCard = ({
             </button>
           )}
 
-          {/* 2. Priimtas darbas -> Įkelti failą ir Priduoti */}
+          {/* B. Jei darbas priimtas -> Inputas ir "Submit" */}
           {role === "freelancer" && status === "Accepted" && (
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "5px",
                 width: "100%",
               }}
             >
               <input
                 type="text"
-                placeholder="Paste link to work (GitHub/Drive)..."
-                value={submissionLink}
-                onChange={(e) => setSubmissionLink(e.target.value)}
+                placeholder="Paste link (GitHub...)"
+                value={linkInput}
+                onChange={(e) => setLinkInput(e.target.value)}
                 style={{
                   padding: "8px",
                   borderRadius: "8px",
                   border: "1px solid #e5e7eb",
                   fontSize: "13px",
-                  width: "100%",
-                  boxSizing: "border-box",
                 }}
               />
               <button
@@ -138,29 +152,32 @@ const JobCard = ({
                 style={{
                   background: "#10b981",
                   width: "100%",
-                  opacity: submissionLink ? 1 : 0.5,
+                  opacity: linkInput ? 1 : 0.5,
                 }}
-                disabled={!submissionLink}
-                onClick={() => onSubmitWork(id, submissionLink)}
+                disabled={!linkInput}
+                onClick={() => onSubmitWork(id, linkInput)}
               >
                 Submit Work
               </button>
             </div>
           )}
 
-          {/* 3. Apmokėta -> Rodyti patvirtinimą */}
-          {status === "Approved" && (
+          {/* C. 4 PUNKTAS: Jei patvirtinta -> "Payment Received" */}
+          {role === "freelancer" && status === "Approved" && (
             <div
               style={{
                 color: "#16a34a",
-                fontWeight: "600",
+                fontWeight: "700",
                 fontSize: "14px",
                 display: "flex",
                 alignItems: "center",
                 gap: "5px",
+                background: "#dcfce7",
+                padding: "5px 12px",
+                borderRadius: "99px",
               }}
             >
-              <span style={{ fontSize: "18px" }}>💰</span> Payment Received
+              <span>💰</span> Payment Received
             </div>
           )}
         </div>
