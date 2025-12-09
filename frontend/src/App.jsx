@@ -69,6 +69,22 @@ function App() {
     );
   };
 
+  const handleCancelJob = (jobId) => {
+    if (
+      window.confirm(
+        "Are you sure you want to cancel this job? It will be returned to the marketplace."
+      )
+    ) {
+      setJobs((prev) =>
+        prev.map((job) =>
+          job.id === jobId
+            ? { ...job, status: "Created", freelancer: "", submission: null }
+            : job
+        )
+      );
+    }
+  };
+
   const handleSubmitWork = (jobId, submissionLink) => {
     setJobs((prev) =>
       prev.map((job) =>
@@ -91,9 +107,10 @@ function App() {
   const handleDispute = (jobId) => {
     setJobs((prev) =>
       prev.map((job) =>
-        job.id === jobId ? { ...job, status: "Disputed" } : job
+        job.id === jobId ? { ...job, status: "Accepted" } : job
       )
     );
+    alert("Job returned to freelancer for updates/fixes.");
   };
 
   return (
@@ -143,6 +160,7 @@ function App() {
               account={account}
               onAcceptJob={handleAcceptJob}
               onSubmitWork={handleSubmitWork}
+              onCancelJob={handleCancelJob}
             />
           )}
         </div>

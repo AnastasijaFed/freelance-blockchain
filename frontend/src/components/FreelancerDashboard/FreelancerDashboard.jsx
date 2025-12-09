@@ -2,7 +2,13 @@ import React from "react";
 import "./FreelancerDashboard.css";
 import JobList from "../Jobs/JobList";
 
-const FreelancerDashboard = ({ jobs, account, onAcceptJob, onSubmitWork }) => {
+const FreelancerDashboard = ({
+  jobs,
+  account,
+  onAcceptJob,
+  onSubmitWork,
+  onCancelJob,
+}) => {
   const availableJobs = jobs.filter((job) => job.status === "Created");
 
   const myActiveJobs = jobs.filter(
@@ -23,10 +29,9 @@ const FreelancerDashboard = ({ jobs, account, onAcceptJob, onSubmitWork }) => {
 
   return (
     <div className="freelancer-dashboard">
-      {/* 1. Available Jobs */}
       <div className="freelancer-section">
         <JobList
-          customTitle="Available Jobs (Marketplace)"
+          customTitle="Available Jobs"
           jobs={availableJobs}
           role="freelancer"
           onAcceptJob={onAcceptJob}
@@ -36,20 +41,19 @@ const FreelancerDashboard = ({ jobs, account, onAcceptJob, onSubmitWork }) => {
         )}
       </div>
 
-      {/* 2. My Active Projects */}
       <div className="freelancer-section">
         <JobList
           customTitle="My Active Projects"
           jobs={myActiveJobs}
           role="freelancer"
           onSubmitWork={onSubmitWork}
+          onCancelJob={onCancelJob}
         />
         {myActiveJobs.length === 0 && (
           <div className="no-jobs-message">You have no active projects.</div>
         )}
       </div>
 
-      {/* 3. Finished Jobs (su atskira klase) */}
       {myFinishedJobs.length > 0 && (
         <div className="freelancer-section finished-section">
           <JobList

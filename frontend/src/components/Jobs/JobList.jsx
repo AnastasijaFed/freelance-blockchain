@@ -10,6 +10,7 @@ const JobList = ({
   onDispute,
   onAcceptJob,
   onSubmitWork,
+  onCancelJob,
   customTitle,
 }) => {
   const getTitle = () => {
@@ -37,6 +38,7 @@ const JobList = ({
             onDispute={onDispute}
             onAcceptJob={onAcceptJob}
             onSubmitWork={onSubmitWork}
+            onCancelJob={onCancelJob}
           />
         ))}
       </div>
