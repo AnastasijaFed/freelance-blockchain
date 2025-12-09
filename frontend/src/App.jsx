@@ -7,17 +7,16 @@ import "./App.css";
 import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
 import FreelancerDashboard from "./components/FreelancerDashboard/FreelancerDashboard";
 
-// TAI YRA TAVO "BENDRA DUOMENŲ BAZĖ"
 const initialJobs = [
   {
     id: 1,
     title: "Build Landing Page",
     description: "Create a modern landing page.",
-    freelancer: "", // Laukia freelancerio
+    freelancer: "",
     amountEth: "2.5",
     deadline: "20/12/2025",
-    status: "Created", // Pradinis statusas
-    submission: null, // Nėra nuorodos
+    status: "Created",
+    submission: null,
   },
 ];
 
@@ -55,8 +54,6 @@ function App() {
   };
 
   const disconnectWallet = () => setAccount(null);
-
-  // --- LOGIKA ---
 
   const handleCreateJob = (newJob) => {
     setJobs((prev) => [{ ...newJob, submission: null }, ...prev]);

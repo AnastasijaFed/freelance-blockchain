@@ -3,10 +3,9 @@ import "./FreelancerDashboard.css";
 import JobList from "../Jobs/JobList";
 
 const FreelancerDashboard = ({ jobs, account, onAcceptJob, onSubmitWork }) => {
-  // 1. Laisvi darbai (tikriname ar job.status yra "Created")
+  // Laisvi darbai (tikriname ar job.status yra "Created")
   const availableJobs = jobs.filter((job) => job.status === "Created");
 
-  // 2. Mano darbai
   // Rodome darbus, kurie yra priimti/priduoti/patvirtinti
   // IR kurių freelancer adresas sutampa su prisijungusiu account
   const myActiveJobs = jobs.filter(

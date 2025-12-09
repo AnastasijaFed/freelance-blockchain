@@ -33,8 +33,6 @@ const JobCard = ({
 
       <p className="job-description">{description}</p>
 
-      {/* --- 2 PUNKTAS: Nuorodos rodymas --- */}
-      {/* Rodome TIK jei darbas priduotas (Submitted) arba patvirtintas (Approved) */}
       {(status === "Submitted" || status === "Approved") && submission && (
         <div
           style={{
@@ -66,10 +64,16 @@ const JobCard = ({
       <div className="job-meta">
         <div className="job-meta-item">
           <span className="meta-label">Freelancer</span>
-          <span className="meta-value">
-            {freelancer
-              ? `${freelancer.slice(0, 6)}...${freelancer.slice(-4)}`
-              : "—"}
+          <span
+            className="meta-value"
+            style={{
+              wordBreak: "break-all",
+              fontSize: "12px",
+              lineHeight: "1.4",
+            }}
+          >
+            {/* RODO PILNĄ ADRESĄ */}
+            {freelancer || "—"}
           </span>
         </div>
         <div className="job-meta-item">
@@ -83,7 +87,6 @@ const JobCard = ({
       </div>
 
       <div className="job-card-footer">
-        {/* View Details mato visi */}
         {onViewDetails && (
           <button className="link-btn" onClick={() => onViewDetails(job)}>
             View Details
@@ -99,8 +102,6 @@ const JobCard = ({
             width: "100%",
           }}
         >
-          {/* --- KLIENTO MYGTUKAI --- */}
-          {/* 4 PUNKTAS: Klientas mato "Pay" tik kai darbas PRIDUOTAS (Submitted) */}
           {role === "client" && status === "Submitted" && (
             <div style={{ display: "flex", gap: "8px" }}>
               <button className="approve-btn" onClick={() => onApprove(id)}>
@@ -112,9 +113,6 @@ const JobCard = ({
             </div>
           )}
 
-          {/* --- FREELANCERIO MYGTUKAI --- */}
-
-          {/* A. Jei darbas naujas -> "Accept" */}
           {role === "freelancer" && status === "Created" && (
             <button
               className="approve-btn"
@@ -125,7 +123,6 @@ const JobCard = ({
             </button>
           )}
 
-          {/* B. Jei darbas priimtas -> Inputas ir "Submit" */}
           {role === "freelancer" && status === "Accepted" && (
             <div
               style={{
@@ -162,7 +159,6 @@ const JobCard = ({
             </div>
           )}
 
-          {/* C. 4 PUNKTAS: Jei patvirtinta -> "Payment Received" */}
           {role === "freelancer" && status === "Approved" && (
             <div
               style={{
