@@ -10,13 +10,18 @@ const JobList = ({
   onDispute,
   onAcceptJob,
   onSubmitWork,
+  customTitle,
 }) => {
+  const getTitle = () => {
+    if (customTitle) return customTitle;
+    return role === "freelancer" ? "Jobs" : "My Posted Jobs";
+  };
+
   return (
     <div className="jobs-section">
-      {}
       <div className="jobs-header">
         <div className="jobs-title">
-          <h2>{role === "freelancer" ? "Jobs" : "My Posted Jobs"}</h2>
+          <h2>{getTitle()}</h2>
           <span className="jobs-count">{jobs.length}</span>
         </div>
       </div>

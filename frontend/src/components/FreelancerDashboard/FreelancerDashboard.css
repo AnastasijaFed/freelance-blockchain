@@ -1,5 +1,3 @@
-/* src/components/FreelancerDashboard/FreelancerDashboard.css */
-
 .freelancer-dashboard {
   padding: 2rem 4rem;
   background: #f3f4f6;
@@ -13,8 +11,27 @@
   font-weight: 600;
 }
 
+/* Standartinis tarpas tarp sekcijų */
 .freelancer-section {
-  margin-bottom: 3rem;
+  margin-top: 5rem; /* Didelis tarpas, kad atskirtų Available nuo Active */
+  margin-bottom: 0;
+}
+
+/* Pirma sekcija neturi turėti tarpo viršuje */
+.freelancer-section:first-child {
+  margin-top: 0;
+}
+
+/* "Finished" sekcija turi liniją ir paddingą */
+.finished-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 2rem;
+  /* Matematika: 
+     Active sekcijos tarpas = 5rem.
+     Finished sekcijos tarpas = 3rem margin + 2rem padding = 5rem vizualiai.
+     Rezultatas: Tarpai vizualiai identiški.
+  */
+  margin-top: 3rem;
 }
 
 .no-jobs-message {

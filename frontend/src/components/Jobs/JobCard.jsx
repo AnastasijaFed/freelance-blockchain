@@ -62,36 +62,38 @@ const JobCard = ({
       )}
 
       <div className="job-meta">
-        <div className="job-meta-item">
-          <span className="meta-label">Freelancer</span>
-          <span
-            className="meta-value"
-            title={freelancer}
-            style={{ cursor: "help", borderBottom: "1px dotted #ccc" }}
-          >
-            {freelancer
-              ? `${freelancer.slice(0, 6)}...${freelancer.slice(-4)}`
-              : "—"}
-          </span>
+        <div className="meta-row">
+          <div className="job-meta-item">
+            <span className="meta-label">Freelancer</span>
+            <span
+              className="meta-value"
+              title={freelancer}
+              style={{ cursor: "help", borderBottom: "1px dotted #ccc" }}
+            >
+              {freelancer
+                ? `${freelancer.slice(0, 6)}...${freelancer.slice(-4)}`
+                : "—"}
+            </span>
+          </div>
+
+          <div className="job-meta-item">
+            <span className="meta-label">Payment</span>
+            <span className="meta-value">{amountEth} ETH</span>
+          </div>
+
+          <div className="job-meta-item">
+            <span className="meta-label">Deadline</span>
+            <span className="meta-value">{deadline}</span>
+          </div>
         </div>
 
-        <div className="job-meta-item">
-          <span className="meta-label">Payment</span>
-          <span className="meta-value">{amountEth} ETH</span>
-        </div>
-
-        <div className="job-meta-item">
-          <span className="meta-label">Deadline</span>
-          <span className="meta-value">{deadline}</span>
-        </div>
-
-        <div className="job-meta-item details-cell">
-          {onViewDetails && (
+        {onViewDetails && (
+          <div className="details-btn-container">
             <button className="link-btn" onClick={() => onViewDetails(job)}>
               View Details
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="job-card-footer">
