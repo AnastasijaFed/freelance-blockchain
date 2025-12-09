@@ -14,7 +14,7 @@ const initialJobs = [
     description: "Create a modern landing page.",
     freelancer: "",
     amountEth: "2.5",
-    deadline: "20/12/2025",
+    deadline: "2025-12-20",
     status: "Created",
     submission: null,
   },
@@ -131,14 +131,15 @@ function App() {
 
           {role === "client" ? (
             <ClientDashboard
-              jobs={jobs} // SIUNČIAME BENDRA SĄRAŠĄ
+              jobs={jobs}
+              account={account}
               onCreateJob={handleCreateJob}
               onApprove={handleApprove}
               onDispute={handleDispute}
             />
           ) : (
             <FreelancerDashboard
-              jobs={jobs} // SIUNČIAME TĄ PATĮ SĄRAŠĄ
+              jobs={jobs}
               account={account}
               onAcceptJob={handleAcceptJob}
               onSubmitWork={handleSubmitWork}

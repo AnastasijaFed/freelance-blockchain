@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./NewJobCard.css";
 
-const NewJobCard = ({ onCreateJob }) => {
+const NewJobCard = ({ onCreateJob, account }) => {
   const [freelancerAddress, setFreelancerAddress] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
@@ -20,7 +20,7 @@ const NewJobCard = ({ onCreateJob }) => {
 
     const selectedDate = new Date(deadline);
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Lyginame tik datas, be laiko
+    today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
       setError("The deadline cannot be in the past.");
@@ -47,6 +47,14 @@ const NewJobCard = ({ onCreateJob }) => {
     setDeadline("");
   };
 
+  const fillMyAddress = () => {
+    if (account) {
+      setFreelancerAddress(account);
+    } else {
+      alert("Please connect wallet first!");
+    }
+  };
+
   return (
     <div className="new-job-container">
       <div className="new-job-card">
@@ -60,16 +68,43 @@ const NewJobCard = ({ onCreateJob }) => {
               <label>
                 Freelancer Address <span className="required">*</span>
               </label>
-              <input
-                type="text"
-                placeholder="0x..."
-                value={freelancerAddress}
-                onChange={(e) => setFreelancerAddress(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative", width: "100%" }}>
+                <input
+                  type="text"
+                  placeholder="0x..."
+                  value={freelancerAddress}
+                  onChange={(e) => setFreelancerAddress(e.target.value)}
+                  required
+                  style={{
+                    paddingRight: "120px",
+                    width: "100%",
+                    boxSizing: "border-box",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={fillMyAddress}
+                  style={{
+                    position: "absolute",
+                    right: "8px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "#eef2ff",
+                    border: "none",
+                    color: "#4f46e5",
+                    fontSize: "12px",
+                    padding: "4px 8px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontWeight: "600",
+                  }}
+                >
+                  Autofill Mine
+                </button>
+              </div>
               <small className="helper-text">
-                Enter the wallet address of the freelancer (e.g., 0x123...). If
-                testing alone, copy your own address from the navbar.
+                Enter the freelancer's wallet address. Use "Autofill" to test
+                with your own wallet.
               </small>
             </div>
           </div>
@@ -95,7 +130,7 @@ const NewJobCard = ({ onCreateJob }) => {
                 Job Description <span className="required">*</span>
               </label>
               <textarea
-                placeholder="Describe the job requirements..."
+                placeholder="Describe requirements..."
                 rows={4}
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
@@ -137,7 +172,7 @@ const NewJobCard = ({ onCreateJob }) => {
               Estimated Gas Fee: <span>0.0023 ETH</span>
             </p>
             <p>
-              Total (Payment + Gas):{" "}
+              Total:{" "}
               <span>
                 {paymentAmount
                   ? (parseFloat(paymentAmount) + 0.0023).toFixed(4)
@@ -148,8 +183,7 @@ const NewJobCard = ({ onCreateJob }) => {
           </div>
 
           <button type="submit" className="primary-submit-btn">
-            <span className="plus-icon">＋</span>
-            Create Job & Lock Funds
+            <span className="plus-icon">＋</span> Create Job & Lock Funds
           </button>
         </form>
       </div>

@@ -4,7 +4,13 @@ import NewJobCard from "../NewJobCard/NewJobCard";
 import JobList from "../Jobs/JobList";
 import JobDetailsModal from "../Jobs/JobDetailsModal";
 
-const ClientDashboard = ({ jobs, onCreateJob, onApprove, onDispute }) => {
+const ClientDashboard = ({
+  jobs,
+  account,
+  onCreateJob,
+  onApprove,
+  onDispute,
+}) => {
   const [selectedJob, setSelectedJob] = useState(null);
 
   const handleViewDetails = (job) => {
@@ -17,11 +23,11 @@ const ClientDashboard = ({ jobs, onCreateJob, onApprove, onDispute }) => {
 
   return (
     <div className="client-dashboard">
-      <NewJobCard onCreateJob={onCreateJob} />
+      <NewJobCard onCreateJob={onCreateJob} account={account} />
 
       <JobList
-        jobs={jobs} // Dabar naudojame bendrą sąrašą iš App.jsx
-        role="client" // Nurodome, kad čia žiūri klientas
+        jobs={jobs}
+        role="client"
         onViewDetails={handleViewDetails}
         onApprove={onApprove}
         onDispute={onDispute}
