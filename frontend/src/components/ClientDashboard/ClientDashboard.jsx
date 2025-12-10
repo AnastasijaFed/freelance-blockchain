@@ -19,6 +19,12 @@ const ClientDashboard = ({
       job.status === "Accepted" ||
       job.status === "Submitted"
   );
+  const myJobs = jobs.filter(
+    (job) =>
+      job.client &&
+      account &&
+      job.client.toLowerCase() === account.toLowerCase()
+  );
 
   const finishedJobs = jobs.filter(
     (job) => job.status === "Approved" || job.status === "Disputed"
