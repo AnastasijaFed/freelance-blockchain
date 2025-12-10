@@ -13,20 +13,21 @@ const ClientDashboard = ({
 }) => {
   const [selectedJob, setSelectedJob] = useState(null);
 
-  const activeJobs = jobs.filter(
-    (job) =>
-      job.status === "Created" ||
-      job.status === "Accepted" ||
-      job.status === "Submitted"
-  );
-  const myJobs = jobs.filter(
+  const myCreatedJobs = jobs.filter(
     (job) =>
       job.client &&
       account &&
       job.client.toLowerCase() === account.toLowerCase()
   );
 
-  const finishedJobs = jobs.filter(
+  const activeJobs = myCreatedJobs.filter(
+    (job) =>
+      job.status === "Created" ||
+      job.status === "Accepted" ||
+      job.status === "Submitted"
+  );
+
+  const finishedJobs = myCreatedJobs.filter(
     (job) => job.status === "Approved" || job.status === "Disputed"
   );
 
@@ -44,7 +45,7 @@ const ClientDashboard = ({
 
       {activeJobs.length > 0 && (
         <JobList
-          customTitle="Active Jobs"
+          customTitle="My Posted Jobs (Active)"
           jobs={activeJobs}
           role="client"
           onViewDetails={handleViewDetails}
@@ -56,9 +57,9 @@ const ClientDashboard = ({
       {finishedJobs.length > 0 && (
         <div
           style={{
-            marginTop: "3rem",
+            marginTop: "4rem",
             borderTop: "1px solid #e5e7eb",
-            paddingTop: "1rem",
+            paddingTop: "2rem",
           }}
         >
           <JobList
@@ -69,6 +70,12 @@ const ClientDashboard = ({
             onApprove={onApprove}
             onDispute={onDispute}
           />
+        </div>
+      )}
+
+      {activeJobs.length === 0 && finishedJobs.length === 0 && (
+        <div style={{ textAlign: "center", padding: "2rem", color: "#6b7280" }}>
+          You haven't posted any jobs yet.
         </div>
       )}
 
