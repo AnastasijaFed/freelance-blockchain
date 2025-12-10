@@ -13,8 +13,8 @@ const NewJobCard = ({ onCreateJob, account }) => {
     e.preventDefault();
     setError("");
 
-    if (parseFloat(paymentAmount) < 0) {
-      setError("Payment amount cannot be negative.");
+    if (parseFloat(paymentAmount) < 0.01) {
+      setError("Payment amount must be at least 0.01 ETH.");
       return;
     }
 

@@ -6,28 +6,26 @@ import { ethers } from "ethers";
 import "./App.css";
 import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
 import FreelancerDashboard from "./components/FreelancerDashboard/FreelancerDashboard";
-import FreelancePlatformArtifact from "./contracts/FreelancePlatform.json";
-
+import FreelancePlatformArtifact from "../contracts/FreelancePlatform.json";
 
 const mapStatus = (statusNumber) => {
   const s = Number(statusNumber);
   switch (s) {
     case 0:
-      return "Created"; 
+      return "Created";
     case 1:
-      return "Accepted"; 
+      return "Accepted";
     case 2:
-      return "Submitted"; 
+      return "Submitted";
     case 3:
-      return "Approved"; 
+      return "Approved";
     case 4:
-      return "Cancelled"; 
+      return "Cancelled";
     default:
       return "Unknown";
   }
 };
 const jobFromOnchain = (onchainJob) => {
-
   const {
     id,
     client,
@@ -45,7 +43,7 @@ const jobFromOnchain = (onchainJob) => {
     description,
     freelancer,
     amountEth: ethers.utils.formatEther(amount),
-    deadline: "", 
+    deadline: "",
     status: mapStatus(status),
     submission: workUri || null,
     client,
@@ -54,10 +52,9 @@ const jobFromOnchain = (onchainJob) => {
 function App() {
   const [account, setAccount] = useState(null);
   const [role, setRole] = useState("client");
-    const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
-  
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -92,9 +89,8 @@ function App() {
       });
     }
   }, []);
-  
 
-    const syncJobsFromChain = async (_contract = contract) => {
+  const syncJobsFromChain = async (_contract = contract) => {
     if (!_contract) return;
 
     try {
@@ -119,87 +115,93 @@ function App() {
   };
 
   const setupBlockchainConnection = async () => {
-  if (!window.ethereum) {
-    alert("Install MetaMask to use this app.");
-    return;
-  }
+    if (!window.ethereum) {
+      alert("Install MetaMask to use this app.");
+      return;
+    }
 
-  const _provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = _provider.getSigner();
+    const _provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = _provider.getSigner();
 
-  // --- NEW: read address directly from artifact ---
-  const networks = FreelancePlatformArtifact.networks || {};
-  const networkIds = Object.keys(networks);
+    // --- NEW: read address directly from artifact ---
+    const networks = FreelancePlatformArtifact.networks || {};
+    const networkIds = Object.keys(networks);
 
-  console.log("Artifact networks:", networks);
-  console.log("Artifact network ids:", networkIds);
+    console.log("Artifact networks:", networks);
+    console.log("Artifact network ids:", networkIds);
 
-  if (networkIds.length === 0) {
-    console.error("No deployments found in FreelancePlatformArtifact.networks");
-    alert(
-      "Smart contract has not been deployed yet. Run `truffle migrate` and copy the JSON."
+    if (networkIds.length === 0) {
+      console.error(
+        "No deployments found in FreelancePlatformArtifact.networks"
+      );
+      alert(
+        "Smart contract has not been deployed yet. Run `truffle migrate` and copy the JSON."
+      );
+      return;
+    }
+
+    // Just take the first network (for dev: that's Ganache)
+    const firstNetworkId = networkIds[0];
+    const address = networks[firstNetworkId].address;
+
+    console.log(
+      "Using contract address from artifact:",
+      address,
+      "networkId:",
+      firstNetworkId
     );
-    return;
-  }
 
-  // Just take the first network (for dev: that's Ganache)
-  const firstNetworkId = networkIds[0];
-  const address = networks[firstNetworkId].address;
+    // Double-check that there is code at this address on the currently selected RPC
+    const code = await _provider.getCode(address);
+    if (code === "0x") {
+      console.error("No contract code at address", address);
+      alert(
+        "No smart contract found at the expected address on this RPC. Make sure Ganache is running and you migrated to this Ganache instance."
+      );
+      return;
+    }
 
-  console.log("Using contract address from artifact:", address, "networkId:", firstNetworkId);
-
-  // Double-check that there is code at this address on the currently selected RPC
-  const code = await _provider.getCode(address);
-  if (code === "0x") {
-    console.error("No contract code at address", address);
-    alert(
-      "No smart contract found at the expected address on this RPC. Make sure Ganache is running and you migrated to this Ganache instance."
+    const _contract = new ethers.Contract(
+      address,
+      FreelancePlatformArtifact.abi,
+      signer
     );
-    return;
-  }
 
-  const _contract = new ethers.Contract(
-    address,
-    FreelancePlatformArtifact.abi,
-    signer
-  );
+    const signerAddress = await signer.getAddress();
+    console.log("🔗 Connected wallet:", signerAddress);
+    console.log("🔗 Using contract at:", address);
 
-  const signerAddress = await signer.getAddress();
-  console.log("🔗 Connected wallet:", signerAddress);
-  console.log("🔗 Using contract at:", address);
+    setProvider(_provider);
+    setContract(_contract);
+    setAccount(signerAddress);
 
-  setProvider(_provider);
-  setContract(_contract);
-  setAccount(signerAddress);
-
-  await syncJobsFromChain(_contract);
-};
-
+    await syncJobsFromChain(_contract);
+  };
 
   const connectWallet = async () => {
     if (!window.ethereum) return alert("Install MetaMask!");
 
-  try {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
+    try {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       if (accounts.length > 0) setAccount(accounts[0]);
       window.ethereum.on("accountsChanged", (newAccounts) => {
-            if (newAccounts.length > 0) {
-              setAccount(newAccounts[0]);
-            } else {
-              setAccount(null); 
-            }
-          });
+        if (newAccounts.length > 0) {
+          setAccount(newAccounts[0]);
+        } else {
+          setAccount(null);
+        }
+      });
 
-    await setupBlockchainConnection(accounts[0]);  
-  } catch (err) {
-    console.error(err);
-  }
+      await setupBlockchainConnection(accounts[0]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const disconnectWallet = () => setAccount(null);
-const handleCreateJob = async (newJob) => {
+  const handleCreateJob = async (newJob) => {
     if (!contract || !account) {
       alert("Connect wallet first");
       return;
@@ -255,9 +257,7 @@ const handleCreateJob = async (newJob) => {
       const onchainJob = await contract.getJob(jobId);
       const updatedJob = jobFromOnchain(onchainJob);
 
-      setJobs((prev) =>
-        prev.map((j) => (j.id === jobId ? updatedJob : j))
-      );
+      setJobs((prev) => prev.map((j) => (j.id === jobId ? updatedJob : j)));
       alert("Funds released to Freelancer!(on-chain)");
     } catch (err) {
       console.error(err);
@@ -277,17 +277,15 @@ const handleCreateJob = async (newJob) => {
       const onchainJob = await contract.getJob(jobId);
       const updatedJob = jobFromOnchain(onchainJob);
 
-      setJobs((prev) =>
-        prev.map((j) => (j.id === jobId ? updatedJob : j))
-      );
+      setJobs((prev) => prev.map((j) => (j.id === jobId ? updatedJob : j)));
     } catch (err) {
       console.error(err);
       alert("Error submitting work, see console");
     }
   };
 
-  const handleApprove =async(jobId) => {
-   if (!contract || !account) {
+  const handleApprove = async (jobId) => {
+    if (!contract || !account) {
       alert("Connect wallet first");
       return;
     }
@@ -298,9 +296,7 @@ const handleCreateJob = async (newJob) => {
       const onchainJob = await contract.getJob(jobId);
       const updatedJob = jobFromOnchain(onchainJob);
 
-      setJobs((prev) =>
-        prev.map((j) => (j.id === jobId ? updatedJob : j))
-      );
+      setJobs((prev) => prev.map((j) => (j.id === jobId ? updatedJob : j)));
       alert("Funds released to Freelancer!(on-chain)");
     } catch (err) {
       console.error(err);
