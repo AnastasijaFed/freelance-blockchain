@@ -9,7 +9,14 @@ const FreelancerDashboard = ({
   onSubmitWork,
   onCancelJob,
 }) => {
-  const availableJobs = jobs.filter((job) => job.status === "Created");
+  if (!jobs) return null;
+
+  const availableJobs = jobs.filter(
+    (job) =>
+      job.status === "Created" &&
+      (!job.client ||
+        (account && job.client.toLowerCase() !== account.toLowerCase()))
+  );
 
   const myActiveJobs = jobs.filter(
     (job) =>
