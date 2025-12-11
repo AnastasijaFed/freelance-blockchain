@@ -2,7 +2,14 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import WelcomeCard from "./components/WelcomeCard/WelcomeCard";
 import NewJobCard from "./components/NewJobCard/NewJobCard";
-import { ethers } from "ethers";
+import {
+  BrowserProvider,
+  Contract,
+  parseEther,
+  formatEther,
+  ZeroAddress
+} from "ethers";
+
 import "./App.css";
 import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
 import FreelancerDashboard from "./components/FreelancerDashboard/FreelancerDashboard";
@@ -21,6 +28,8 @@ const mapStatus = (statusNumber) => {
       return "Approved";
     case 4:
       return "Cancelled";
+    case 5: 
+      return "Disputed";
     default:
       return "Unknown";
   }
@@ -39,22 +48,21 @@ const jobFromOnchain = (onchainJob) => {
     workUri,
   } = onchainJob;
 
-  // --- PRIDĖTA: Konvertuojame sekundes į datą ---
   let formattedDeadline = "N/A";
   if (deadline && Number(deadline) > 0) {
     formattedDeadline = new Date(Number(deadline) * 1000)
       .toISOString()
       .split("T")[0];
   }
-  // ----------------------------------------------
+
 
   return {
     id: Number(id),
     title,
     description,
-    freelancer: freelancer === ethers.ZeroAddress ? "" : freelancer,
-    amountEth: ethers.formatEther(amount),
-    deadline: formattedDeadline, // Dabar šis kintamasis jau egzistuoja
+    freelancer: freelancer === ZeroAddress ? "" : freelancer,
+    amountEth: formatEther(amount),
+    deadline: formattedDeadline, 
     status: mapStatus(status),
     submission: workUri || null,
     client,
@@ -82,34 +90,70 @@ function App() {
       console.error(err);
     }
   };
+  const getDeployedAddressFromArtifact = async (provider) => {
+  const networks = FreelancePlatformArtifact.networks || {};
+  const entries = Object.entries(networks);
 
-  const setupBlockchainConnection = async (acc) => {
-    if (!window.ethereum) return;
+  console.log("Artifact networks:", networks);
 
-    const _provider = new ethers.BrowserProvider(window.ethereum);
+  if (entries.length === 0) {
+    throw new Error(
+      "No deployments found in FreelancePlatformArtifact.networks. Did you run `truffle migrate`?"
+    );
+  }
+
+  for (const [netId, netInfo] of entries) {
+    const candidate = netInfo.address;
+    if (!candidate) continue;
+
+    const code = await provider.getCode(candidate);
+    console.log(`Checking address ${candidate} for networkId ${netId}, code prefix:`, code.slice(0, 10));
+
+    if (code && code !== "0x") {
+      console.log("Found deployed contract at:", candidate, "for networkId:", netId);
+      return candidate;
+    }
+  }
+
+  throw new Error(
+    "No contract from FreelancePlatformArtifact has code on the current RPC. " +
+      "Make sure Ganache is running, you ran `truffle migrate --reset`, and copied the JSON to frontend."
+  );
+};
+
+
+  const setupBlockchainConnection = async () => {
+  if (!window.ethereum) {
+    alert("Install MetaMask to use this app.");
+    return;
+  }
+
+  try {
+    const _provider = new BrowserProvider(window.ethereum);
     const signer = await _provider.getSigner();
 
-    // Svarbu: įsitikinkite, kad FreelancePlatform.json yra atnaujintas po 'truffle migrate'
-    const networks = FreelancePlatformArtifact.networks;
-    const networkId = Object.keys(networks)[0];
-
-    if (!networkId) {
-      alert("Contract not deployed to current network");
-      return;
-    }
-
-    const address = networks[networkId].address;
-    const _contract = new ethers.Contract(
+    const address = await getDeployedAddressFromArtifact(_provider);
+    const _contract = new Contract(
       address,
       FreelancePlatformArtifact.abi,
       signer
     );
 
+    const signerAddress = await signer.getAddress();
+    console.log("Connected wallet:", signerAddress);
+    console.log("Using contract at:", address);
+
     setProvider(_provider);
     setContract(_contract);
-    setAccount(acc);
+    setAccount(signerAddress);
+
     await syncJobsFromChain(_contract);
-  };
+  } catch (err) {
+    console.error("Error setting up blockchain connection:", err);
+    alert(err.message || "Failed to connect to smart contract.");
+  }
+};
+
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -151,13 +195,12 @@ function App() {
   const handleCreateJob = async (newJob) => {
     if (!contract) return;
     try {
-      const val = ethers.parseEther(newJob.amountEth);
+      const val = parseEther(newJob.amountEth);
 
-      // Konvertuojame datą į timestamp
+      
       const dateObj = new Date(newJob.deadline);
       const deadlineTimestamp = Math.floor(dateObj.getTime() / 1000);
 
-      // Siunčiame su nauju argumentu (deadlineTimestamp)
       const tx = await contract.createJob(
         newJob.title,
         newJob.description,
@@ -209,9 +252,17 @@ function App() {
       alert("Transaction failed");
     }
   };
-
-  const handleDispute = async (jobId) => {
-    alert("Dispute logic pending in contract");
+const handleDispute = async (jobId) => {
+    if (!contract) return;
+    try {
+      const tx = await contract.disputeJob(jobId);
+      await tx.wait();
+      syncJobsFromChain(contract);
+      alert(`Dispute opened for job ${jobId}!`);
+    } catch (err) {
+      console.error(err);
+      alert("Transaction failed: Could not start dispute.");
+    }
   };
 
   const handleCancelJob = async (jobId) => {

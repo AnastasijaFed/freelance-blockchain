@@ -6,7 +6,8 @@ contract FreelancePlatform {
         InProgress,  
         Submitted,   
         Completed,   
-        Cancelled    
+        Cancelled,
+        Disputed   
     }
 
     struct Job {
@@ -17,7 +18,8 @@ contract FreelancePlatform {
         Status status;
         string title;
         string description;
-        string workUri;       
+        string workUri;   
+        uint256 deadline;     
     }
 
     uint256 public nextJobId;
@@ -34,6 +36,7 @@ contract FreelancePlatform {
     event JobCompleted(uint256 indexed id);
     event JobCancelled(uint256 indexed id);
     event PayoutReleased(uint256 indexed id, address indexed freelancer, uint256 amount);
+    event JobDisputed(uint256 indexed id);
 
     modifier onlyClient(uint256 _jobId) {
         require(msg.sender == jobs[_jobId].client, "Not job client");
@@ -52,7 +55,8 @@ contract FreelancePlatform {
 
     function createJob(
         string calldata _title,
-        string calldata _description
+        string calldata _description,
+        uint256 _deadline
     ) external payable {
         require(msg.value > 0, "Must send payment");
 
@@ -65,7 +69,8 @@ contract FreelancePlatform {
             status: Status.Open,
             title: _title,
             description: _description,
-            workUri: ""
+            workUri: "",
+            deadline: _deadline 
         });
         nextJobId++;
 
@@ -98,7 +103,7 @@ contract FreelancePlatform {
         emit WorkSubmitted(_jobId, _workUri);
     }
 
-    /// @notice client accepts submitted work and pays freelancer
+
     function markCompleted(uint256 _jobId)
         external
         onlyClient(_jobId)
@@ -138,6 +143,16 @@ contract FreelancePlatform {
 
         emit JobCancelled(_jobId);
     }
+    function disputeJob(uint256 _jobId)
+        external
+        onlyClient(_jobId)
+        inStatus(_jobId, Status.Submitted)
+    {
+        Job storage job = jobs[_jobId];
+        job.status = Status.Disputed;
+
+        emit JobDisputed(_jobId);
+    }
 
  
 
@@ -152,7 +167,8 @@ contract FreelancePlatform {
             Status status,
             string memory title,
             string memory description,
-            string memory workUri
+            string memory workUri,
+            uint256 deadline
         )
     {
         Job storage j = jobs[_jobId];
@@ -165,7 +181,8 @@ contract FreelancePlatform {
             j.status,
             j.title,
             j.description,
-            j.workUri
+            j.workUri,
+            j.deadline
         );
     }
 }
