@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import "./NewJobCard.css";
 
 const NewJobCard = ({ onCreateJob, account }) => {
-  const [freelancerAddress, setFreelancerAddress] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
 
+  // Gauname šiandienos datą formatu "YYYY-MM-DD", kad nustatytume min reikšmę kalendoriui
+  const todayStr = new Date().toISOString().split("T")[0];
+
   const handleCreateJob = (e) => {
     e.preventDefault();
     setError("");
 
+    if (!account) {
+      setError("Please connect your wallet first.");
+      return;
+    }
+
+    // Papildoma apsauga, jei naršyklės validacija apeinama
     if (parseFloat(paymentAmount) < 0.01) {
       setError("Payment amount must be at least 0.01 ETH.");
       return;
@@ -31,7 +39,8 @@ const NewJobCard = ({ onCreateJob, account }) => {
       id: Date.now(),
       title: jobTitle,
       description: jobDescription,
-      freelancer: freelancerAddress,
+      freelancer: "", // Laukiam freelancerio
+      client: account,
       amountEth: paymentAmount,
       deadline: deadline,
       status: "Created",
@@ -40,19 +49,10 @@ const NewJobCard = ({ onCreateJob, account }) => {
 
     onCreateJob(newJob);
 
-    setFreelancerAddress("");
     setJobTitle("");
     setJobDescription("");
     setPaymentAmount("");
     setDeadline("");
-  };
-
-  const fillMyAddress = () => {
-    if (account) {
-      setFreelancerAddress(account);
-    } else {
-      alert("Please connect wallet first!");
-    }
   };
 
   return (
@@ -60,52 +60,21 @@ const NewJobCard = ({ onCreateJob, account }) => {
       <div className="new-job-card">
         <h2>Create new job</h2>
 
-        {error && <div className="error-message">{error}</div>}
-
         <form className="create-job-form" onSubmit={handleCreateJob}>
           <div className="form-row">
             <div className="form-field full-width">
-              <label>
-                Freelancer Address <span className="required">*</span>
-              </label>
-              <div style={{ position: "relative", width: "100%" }}>
-                <input
-                  type="text"
-                  placeholder="0x..."
-                  value={freelancerAddress}
-                  onChange={(e) => setFreelancerAddress(e.target.value)}
-                  required
-                  style={{
-                    paddingRight: "120px",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={fillMyAddress}
-                  style={{
-                    position: "absolute",
-                    right: "8px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    background: "#eef2ff",
-                    border: "none",
-                    color: "#4f46e5",
-                    fontSize: "12px",
-                    padding: "4px 8px",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontWeight: "600",
-                  }}
-                >
-                  Autofill Mine
-                </button>
-              </div>
-              <small className="helper-text">
-                Enter the freelancer's wallet address. Use "Autofill" to test
-                with your own wallet.
-              </small>
+              <label>My Wallet Address</label>
+              <input
+                type="text"
+                value={account || "Not Connected"}
+                disabled
+                style={{
+                  background: "#f3f4f6",
+                  color: "#6b7280",
+                  cursor: "not-allowed",
+                  borderColor: "#e5e7eb",
+                }}
+              />
             </div>
           </div>
 
@@ -146,7 +115,7 @@ const NewJobCard = ({ onCreateJob, account }) => {
               </label>
               <input
                 type="number"
-                min="0"
+                min="0.01"
                 step="0.01"
                 placeholder="0.00"
                 value={paymentAmount}
@@ -160,6 +129,9 @@ const NewJobCard = ({ onCreateJob, account }) => {
               </label>
               <input
                 type="date"
+                min={
+                  todayStr
+                } /* <--- Šitas atributas neleidžia pasirinkti praeities */
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
                 required
@@ -181,6 +153,15 @@ const NewJobCard = ({ onCreateJob, account }) => {
               </span>
             </p>
           </div>
+
+          {error && (
+            <div
+              className="error-message"
+              style={{ marginBottom: "0", marginTop: "10px" }}
+            >
+              {error}
+            </div>
+          )}
 
           <button type="submit" className="primary-submit-btn">
             <span className="plus-icon">＋</span> Create Job & Lock Funds

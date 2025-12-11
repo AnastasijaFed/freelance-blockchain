@@ -35,15 +35,26 @@ const jobFromOnchain = (onchainJob) => {
     status,
     title,
     description,
+    deadline,
     workUri,
   } = onchainJob;
+
+  // --- PRIDĖTA: Konvertuojame sekundes į datą ---
+  let formattedDeadline = "N/A";
+  if (deadline && Number(deadline) > 0) {
+    formattedDeadline = new Date(Number(deadline) * 1000)
+      .toISOString()
+      .split("T")[0];
+  }
+  // ----------------------------------------------
+
   return {
     id: Number(id),
     title,
     description,
     freelancer: freelancer === ethers.ZeroAddress ? "" : freelancer,
     amountEth: ethers.formatEther(amount),
-    deadline: "2025-12-31",
+    deadline: formattedDeadline, // Dabar šis kintamasis jau egzistuoja
     status: mapStatus(status),
     submission: workUri || null,
     client,
@@ -78,6 +89,7 @@ function App() {
     const _provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await _provider.getSigner();
 
+    // Svarbu: įsitikinkite, kad FreelancePlatform.json yra atnaujintas po 'truffle migrate'
     const networks = FreelancePlatformArtifact.networks;
     const networkId = Object.keys(networks)[0];
 
@@ -140,9 +152,19 @@ function App() {
     if (!contract) return;
     try {
       const val = ethers.parseEther(newJob.amountEth);
-      const tx = await contract.createJob(newJob.title, newJob.description, {
-        value: val,
-      });
+
+      // Konvertuojame datą į timestamp
+      const dateObj = new Date(newJob.deadline);
+      const deadlineTimestamp = Math.floor(dateObj.getTime() / 1000);
+
+      // Siunčiame su nauju argumentu (deadlineTimestamp)
+      const tx = await contract.createJob(
+        newJob.title,
+        newJob.description,
+        deadlineTimestamp,
+        { value: val }
+      );
+
       await tx.wait();
       syncJobsFromChain(contract);
     } catch (err) {
