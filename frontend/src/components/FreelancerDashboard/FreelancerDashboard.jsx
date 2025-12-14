@@ -20,7 +20,7 @@ const FreelancerDashboard = ({
 
   const myActiveJobs = jobs.filter(
     (job) =>
-      (job.status === "Accepted" || job.status === "Submitted") &&
+      (job.status === "Accepted" || job.status === "Submitted"|| job.status === "Disputed") &&
       job.freelancer &&
       account &&
       job.freelancer.toLowerCase() === account.toLowerCase()
@@ -28,7 +28,7 @@ const FreelancerDashboard = ({
 
   const myFinishedJobs = jobs.filter(
     (job) =>
-      (job.status === "Approved" || job.status === "Disputed") &&
+      (job.status === "Approved" || job.status === "Cancelled") &&
       job.freelancer &&
       account &&
       job.freelancer.toLowerCase() === account.toLowerCase()

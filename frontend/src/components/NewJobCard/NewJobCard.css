@@ -85,22 +85,7 @@
   background: #ffffff;
 }
 
-.gas-info {
-  background: #eef2ff;
-  padding: 0.9rem 1.1rem;
-  border-radius: 16px;
-  font-size: 14px;
-  color: #4b5563;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
 
-.gas-info span {
-  font-weight: 600;
-  color: #111827;
-}
 
 .primary-submit-btn {
   margin-top: 0.5rem;
@@ -140,8 +125,5 @@
     min-width: 100%;
   }
 
-  .gas-info {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+ 
 }

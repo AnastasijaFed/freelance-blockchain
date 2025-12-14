@@ -8,7 +8,7 @@ const NewJobCard = ({ onCreateJob, account }) => {
   const [deadline, setDeadline] = useState("");
   const [error, setError] = useState("");
 
-  // Gauname šiandienos datą formatu "YYYY-MM-DD", kad nustatytume min reikšmę kalendoriui
+
   const todayStr = new Date().toISOString().split("T")[0];
 
   const handleCreateJob = (e) => {
@@ -20,7 +20,7 @@ const NewJobCard = ({ onCreateJob, account }) => {
       return;
     }
 
-    // Papildoma apsauga, jei naršyklės validacija apeinama
+
     if (parseFloat(paymentAmount) < 0.01) {
       setError("Payment amount must be at least 0.01 ETH.");
       return;
@@ -39,7 +39,7 @@ const NewJobCard = ({ onCreateJob, account }) => {
       id: Date.now(),
       title: jobTitle,
       description: jobDescription,
-      freelancer: "", // Laukiam freelancerio
+      freelancer: "", 
       client: account,
       amountEth: paymentAmount,
       deadline: deadline,
@@ -131,7 +131,7 @@ const NewJobCard = ({ onCreateJob, account }) => {
                 type="date"
                 min={
                   todayStr
-                } /* <--- Šitas atributas neleidžia pasirinkti praeities */
+                } 
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
                 required
@@ -139,20 +139,7 @@ const NewJobCard = ({ onCreateJob, account }) => {
             </div>
           </div>
 
-          <div className="gas-info">
-            <p>
-              Estimated Gas Fee: <span>0.0023 ETH</span>
-            </p>
-            <p>
-              Total:{" "}
-              <span>
-                {paymentAmount
-                  ? (parseFloat(paymentAmount) + 0.0023).toFixed(4)
-                  : "0.0000"}{" "}
-                ETH
-              </span>
-            </p>
-          </div>
+        
 
           {error && (
             <div

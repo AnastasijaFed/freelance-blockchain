@@ -45,6 +45,7 @@ contract FreelancePlatform {
     }
 
     modifier onlyFreelancer(uint256 _jobId) {
+        require(jobs[_jobId].freelancer != address(0), "Job not accepted yet");
         require(msg.sender == jobs[_jobId].freelancer, "Not job freelancer");
         _;
     }
@@ -96,7 +97,6 @@ contract FreelancePlatform {
     function submitWork(uint256 _jobId, string calldata _workUri)
         external
         onlyFreelancer(_jobId)
-        inStatus(_jobId, Status.InProgress)
     {
         Job storage job = jobs[_jobId];
         require(job.status == Status.InProgress || job.status == Status.Disputed, "Invalid status for job sumbission");
@@ -126,24 +126,25 @@ contract FreelancePlatform {
         emit PayoutReleased(_jobId, job.freelancer, amount);
     }
 
-    function cancelJob(uint256 _jobId)
+    
+
+    function freelancerCancelJob(uint256 _jobId)
         external
-        onlyClient(_jobId)
+        onlyFreelancer(_jobId)
+  
     {
         Job storage job = jobs[_jobId];
-
         require(
-            job.status == Status.Open || job.status == Status.Submitted,
-            "Cannot cancel at this stage"
+            job.status == Status.InProgress || job.status == Status.Disputed,
+            "Freelancer can only cancel jobs that are In Progress"
         );
-
         job.status = Status.Cancelled;
-
         uint256 amount = job.amount;
         job.amount = 0;
-
         (bool sent, ) = job.client.call{value: amount}("");
         require(sent, "Refund failed");
+        job.freelancer = address(0);
+
 
         emit JobCancelled(_jobId);
     }

@@ -83,15 +83,19 @@ const JobCard = ({
 
       <div className="job-card-footer">
         <div className="action-buttons">
-          {/* Kliento veiksmai */}
           {role === "client" && status === "Submitted" && (
             <div className="btn-group">
               <button className="approve-btn" onClick={() => onApprove(id)}>
                 Approve & Pay
               </button>
-              <button className="dispute-btn" onClick={() => onDispute(id)}>
+              <button className="dispute-btn" onClick={() => onViewDetails(job)}>
                 Dispute (Fix)
               </button>
+            </div>
+          )}
+          {role === "client" && status === "Disputed" && (
+            <div className="disputed-badge" onClick={() => onViewDetails(job)}>
+              Disputed. Awaiting Freelancer Revision. (View Details)
             </div>
           )}
 
@@ -107,6 +111,9 @@ const JobCard = ({
 
           {(role === "freelancer" && status === "Accepted") || (role === "freelancer" && status === "Disputed") ? (
             <div className="submit-group">
+              {status === "Disputed" && (
+                  <p className="dispute-warning"> Revision Requested. Resubmit work below.</p>
+              )}
               <input
                 type="text"
                 placeholder="Paste link..."
@@ -118,7 +125,7 @@ const JobCard = ({
                 disabled={!linkInput}
                 onClick={() => onSubmitWork(id, linkInput)}
               >
-                Submit Work
+                {status === "Disputed" ? "Resubmit Work" : "Submit Work"}
               </button>
 
               <button className="cancel-btn" onClick={() => onCancelJob(id)}>

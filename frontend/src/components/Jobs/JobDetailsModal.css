@@ -1,4 +1,4 @@
-/* src/components/Jobs/JobDetailsModal.css */
+
 
 .modal-backdrop {
   position: fixed;
@@ -182,4 +182,55 @@
 .close-btn {
   background: #e5e7eb;
   color: #111827;
+}
+
+
+.dispute-comment-box {
+    background: #fee2e2; 
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #fca5a5;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.dispute-comment-title {
+    margin: 0 0 5px 0;
+    color: #b91c1c; 
+    font-weight: 700;
+}
+
+.dispute-comment-box p {
+
+    color: #7f1d1d; 
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+
+
+
+.dispute-input-area {
+    padding: 1rem 0;
+}
+
+.dispute-input-area textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #fca5a5; 
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fffafa; 
+    color: #1f2937;
+    transition: border-color 0.2s;
+}
+
+.dispute-input-area textarea:focus {
+    outline: none;
+    border-color: #ef4444; 
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }

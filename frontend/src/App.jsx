@@ -269,7 +269,24 @@ const handleDispute = async (jobId, comment) => {
   };
 
   const handleCancelJob = async (jobId) => {
-    alert("Cancel logic pending in contract");
+    if (!contract) return;
+    
+    if (!window.confirm(`Are you sure you want to cancel Job ID ${jobId}? This action will refund the funds held in escrow.`)) {
+      return;
+    }
+    
+    try {
+      const tx = await contract.freelancerCancelJob(jobId);
+      await tx.wait();
+      
+      syncJobsFromChain(contract);
+      
+      alert(`Job ${jobId} successfully canceled. Funds refunded to client.`);
+    } catch (err) {
+      console.error("Cancellation failed:", err);
+      const errorMessage = err.reason || "Transaction failed. Check console for details.";
+      alert(`Transaction failed: ${errorMessage}`);
+    }
   };
 
   return (

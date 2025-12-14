@@ -19,6 +19,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
     deadline,
     status,
     submission,
+    disputeComment,
   } = {
     client: "0x742d...0bEb",
     ...job,
@@ -93,6 +94,20 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
             <span className="info-value">{deadline}</span>
           </div>
         </div>
+        {disputeComment && (
+          <div
+           
+            className="dispute-comment-box" 
+          >
+            <h4 
+
+              className="dispute-comment-title"
+            >
+              Client Dispute Comment:
+            </h4>
+            <p style={{ margin: 0, color: "#7f1d1d" }}>{disputeComment}</p>
+          </div>
+        )}
 
        
         {submission && (
