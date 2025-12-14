@@ -34,7 +34,7 @@ const JobCard = ({
 
       <p className="job-description">{description}</p>
 
-      {/* Rodyti nuorodą tik jei submitted/approved */}
+
       {(status === "Submitted" || status === "Approved") && submission && (
         <div className="submission-box">
           <strong>📎 Link:</strong>
@@ -95,7 +95,7 @@ const JobCard = ({
             </div>
           )}
 
-          {/* Freelancerio veiksmai */}
+  
           {role === "freelancer" && status === "Created" && (
             <button
               className="approve-btn blue-btn"
@@ -105,7 +105,7 @@ const JobCard = ({
             </button>
           )}
 
-          {role === "freelancer" && status === "Accepted" && (
+          {(role === "freelancer" && status === "Accepted") || (role === "freelancer" && status === "Disputed") ? (
             <div className="submit-group">
               <input
                 type="text"
@@ -120,12 +120,12 @@ const JobCard = ({
               >
                 Submit Work
               </button>
-              {/* NAUJAS MYGTUKAS: ATSISAKYTI */}
+
               <button className="cancel-btn" onClick={() => onCancelJob(id)}>
                 Cancel Job
               </button>
             </div>
-          )}
+          ) : null}
 
           {role === "freelancer" && status === "Approved" && (
             <div className="paid-badge">

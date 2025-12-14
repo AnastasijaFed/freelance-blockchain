@@ -19,7 +19,8 @@ contract FreelancePlatform {
         string title;
         string description;
         string workUri;   
-        uint256 deadline;     
+        uint256 deadline;
+        string disputeComment;     
     }
 
     uint256 public nextJobId;
@@ -36,7 +37,7 @@ contract FreelancePlatform {
     event JobCompleted(uint256 indexed id);
     event JobCancelled(uint256 indexed id);
     event PayoutReleased(uint256 indexed id, address indexed freelancer, uint256 amount);
-    event JobDisputed(uint256 indexed id);
+    event JobDisputed(uint256 indexed id, string comment);
 
     modifier onlyClient(uint256 _jobId) {
         require(msg.sender == jobs[_jobId].client, "Not job client");
@@ -70,7 +71,8 @@ contract FreelancePlatform {
             title: _title,
             description: _description,
             workUri: "",
-            deadline: _deadline 
+            deadline: _deadline,
+            disputeComment: ""
         });
         nextJobId++;
 
@@ -97,8 +99,10 @@ contract FreelancePlatform {
         inStatus(_jobId, Status.InProgress)
     {
         Job storage job = jobs[_jobId];
+        require(job.status == Status.InProgress || job.status == Status.Disputed, "Invalid status for job sumbission");
         job.status = Status.Submitted;
         job.workUri = _workUri;
+        job.disputeComment = "";
 
         emit WorkSubmitted(_jobId, _workUri);
     }
@@ -143,15 +147,16 @@ contract FreelancePlatform {
 
         emit JobCancelled(_jobId);
     }
-    function disputeJob(uint256 _jobId)
+    function disputeJob(uint256 _jobId, string calldata _comment)
         external
         onlyClient(_jobId)
         inStatus(_jobId, Status.Submitted)
     {
         Job storage job = jobs[_jobId];
         job.status = Status.Disputed;
+        job.disputeComment = _comment;
 
-        emit JobDisputed(_jobId);
+        emit JobDisputed(_jobId, _comment);
     }
 
  
@@ -168,7 +173,8 @@ contract FreelancePlatform {
             string memory title,
             string memory description,
             string memory workUri,
-            uint256 deadline
+            uint256 deadline,
+            string memory disputeComment
         )
     {
         Job storage j = jobs[_jobId];
@@ -182,7 +188,8 @@ contract FreelancePlatform {
             j.title,
             j.description,
             j.workUri,
-            j.deadline
+            j.deadline,
+            j.disputeComment
         );
     }
 }

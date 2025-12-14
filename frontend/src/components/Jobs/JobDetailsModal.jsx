@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import "./JobDetailsModal.css";
 
 const steps = ["Created", "Accepted", "Submitted", "Approved"];
@@ -6,7 +7,9 @@ const steps = ["Created", "Accepted", "Submitted", "Approved"];
 const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
   if (!job) return null;
 
-  // Hardcodinam client adresą, kol nėra back-end
+  const [disputeCommentInput, setDisputeCommentInput] = useState("");
+  const [isDisputeMode, setIsDisputeMode] = useState(false);
+
   const {
     id,
     title,
@@ -24,6 +27,11 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
   const currentIndex = steps.indexOf(
     status === "Disputed" ? "Submitted" : status
   );
+  const confirmDispute = () => {
+    if (!disputeCommentInput) return alert("Please specify what needs to be fixed.");
+    onDispute(id, disputeCommentInput);
+    onClose();
+  };
 
   return (
     <div className="modal-backdrop">
@@ -61,9 +69,12 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
               );
             })}
           </div>
+          {status === "Disputed" && (
+            <p className="disputed-note">Job Disputed. Client requested revisions.</p>
+          )}
         </div>
 
-        {/* Info Grid */}
+
         <div className="info-grid">
           <div className="info-box client">
             <span className="info-label">Client</span>
@@ -83,7 +94,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </div>
         </div>
 
-        {/* NAUJA: Jei yra pateiktas darbas (Submission), rodome jį */}
+       
         {submission && (
           <div
             style={{
@@ -113,7 +124,7 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
           </div>
         )}
 
-        {/* Status Message */}
+    
         <div className="status-message">
           {status === "Submitted"
             ? "The freelancer has submitted their work. Please review the submission above and Approve or Dispute."
@@ -124,17 +135,48 @@ const JobDetailsModal = ({ job, onClose, onApprove, onDispute }) => {
             : `Current status: ${status}.`}
         </div>
 
-        {/* Footer Buttons */}
+        {status === "Submitted" && isDisputeMode && (
+          <div className="dispute-input-area">
+            <textarea
+              placeholder="What specific changes are required (e.g., 'The logo needs to be blue and centered')?"
+              value={disputeCommentInput}
+              onChange={(e) => setDisputeCommentInput(e.target.value)}
+              rows="3"
+            />
+          </div>
+        )}
+
+    
         <div className="modal-footer">
           {status === "Submitted" && (
-            <>
-              <button className="approve-long" onClick={() => onApprove(id)}>
-                Approve & Release Funds
-              </button>
-              <button className="dispute-long" onClick={() => onDispute(id)}>
-                Dispute
-              </button>
-            </>
+            isDisputeMode ? (
+              <>
+                <button 
+                  className="approve-long" 
+                  onClick={confirmDispute}
+                  disabled={!disputeCommentInput.trim()}
+                >
+                  Confirm Dispute & Request Fix
+                </button>
+                <button className="dispute-long" onClick={() => setIsDisputeMode(false)}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="approve-long" onClick={() => onApprove(id)}>
+                  Approve & Release Funds
+                </button>
+                <button className="dispute-long" onClick={() => setIsDisputeMode(true)}>
+                  Dispute
+                </button>
+              </>
+            )
+          )}
+          {status === "Disputed" && (
+             <div className="dispute-info-footer">
+                <p>The job is Disputed. Freelancer must submit revised work.</p>
+             </div>
           )}
           <button className="close-btn" onClick={onClose}>
             Close

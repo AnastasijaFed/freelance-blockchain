@@ -46,6 +46,7 @@ const jobFromOnchain = (onchainJob) => {
     description,
     deadline,
     workUri,
+    disputeComment
   } = onchainJob;
 
   let formattedDeadline = "N/A";
@@ -66,6 +67,7 @@ const jobFromOnchain = (onchainJob) => {
     status: mapStatus(status),
     submission: workUri || null,
     client,
+    disputeComment: disputeComment || null,
   };
 };
 
@@ -252,10 +254,11 @@ function App() {
       alert("Transaction failed");
     }
   };
-const handleDispute = async (jobId) => {
+const handleDispute = async (jobId, comment) => {
     if (!contract) return;
+    if (!comment) return alert("Please provide a comment for the dispute.");
     try {
-      const tx = await contract.disputeJob(jobId);
+      const tx = await contract.disputeJob(jobId, comment);
       await tx.wait();
       syncJobsFromChain(contract);
       alert(`Dispute opened for job ${jobId}!`);
