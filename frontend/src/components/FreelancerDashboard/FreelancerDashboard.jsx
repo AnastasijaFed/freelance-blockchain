@@ -1,6 +1,8 @@
 import React from "react";
 import "./FreelancerDashboard.css";
 import JobList from "../Jobs/JobList";
+import DisputeCommentModal from "../Dispute Job Modal/DisputeCommentModal";
+import { useState } from "react";
 
 const FreelancerDashboard = ({
   jobs,
@@ -10,6 +12,16 @@ const FreelancerDashboard = ({
   onCancelJob,
 }) => {
   if (!jobs) return null;
+  const [disputeJob, setDisputeJob] = useState(null);
+
+  const openDisputeComment = (job) => {
+    setDisputeJob(job);
+    console.log('Dispute Job State Set:', job.id);
+  };
+
+  const closeDisputeComment = () => {
+    setDisputeJob(null);
+  };
 
   const availableJobs = jobs.filter(
     (job) =>
@@ -42,6 +54,7 @@ const FreelancerDashboard = ({
           jobs={availableJobs}
           role="freelancer"
           onAcceptJob={onAcceptJob}
+      
         />
         {availableJobs.length === 0 && (
           <div className="no-jobs-message">No new jobs available.</div>
@@ -55,6 +68,7 @@ const FreelancerDashboard = ({
           role="freelancer"
           onSubmitWork={onSubmitWork}
           onCancelJob={onCancelJob}
+          onViewDisputeComment={openDisputeComment}
         />
         {myActiveJobs.length === 0 && (
           <div className="no-jobs-message">You have no active projects.</div>
@@ -69,6 +83,9 @@ const FreelancerDashboard = ({
             role="freelancer"
           />
         </div>
+      )}
+      {disputeJob && (
+        <DisputeCommentModal job={disputeJob} onClose={closeDisputeComment} />
       )}
     </div>
   );

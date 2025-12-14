@@ -12,6 +12,7 @@ const JobList = ({
   onSubmitWork,
   onCancelJob,
   customTitle,
+  onViewDisputeComment,
 }) => {
   const getTitle = () => {
     if (customTitle) return customTitle;
@@ -39,6 +40,7 @@ const JobList = ({
             onAcceptJob={onAcceptJob}
             onSubmitWork={onSubmitWork}
             onCancelJob={onCancelJob}
+            onViewDisputeComment={onViewDisputeComment}
           />
         ))}
       </div>

@@ -1,0 +1,111 @@
+.dispute-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(60, 60, 80, 0.75); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999999;
+}
+
+.dispute-modal-content {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+    overflow: hidden;
+    color: #1f2937;
+    font-family: Arial, sans-serif;
+}
+
+.dispute-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #6366f1; 
+    color: #ffffff;
+}
+
+.dispute-modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.dispute-modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ffffff;
+    transition: opacity 0.2s;
+}
+
+.dispute-modal-close-btn:hover {
+    opacity: 0.8;
+}
+
+.dispute-modal-body {
+    padding: 20px;
+}
+
+.dispute-modal-warning {
+    background-color: #fef3c7;
+    border-left: 5px solid #f59e0b;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: #78350f;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.dispute-comment-display {
+    background-color: #ddddf982; 
+    border: 1px solid #7f80ec;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #6366f1; 
+}
+
+.dispute-comment-display h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #060606; 
+}
+
+.dispute-comment-display p {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    color: #4b5563;
+    line-height: 1.4;
+}
+
+.dispute-modal-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.dispute-modal-footer button {
+    padding: 10px 30px; 
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+}
+
+.dispute-modal-footer button:hover {
+    background-color: #4f46e5;
+}

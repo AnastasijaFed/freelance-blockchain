@@ -10,6 +10,7 @@ const JobCard = ({
   onAcceptJob,
   onSubmitWork,
   onCancelJob,
+  onViewDisputeComment,
 }) => {
   const {
     id,
@@ -74,6 +75,14 @@ const JobCard = ({
       </div>
 
       <div className="view-details-row">
+        {role === "freelancer" && status === "Disputed" && job.disputeComment && (
+            <button 
+                className="link-btn dispute-link" 
+                onClick={() => onViewDisputeComment && onViewDisputeComment(job)}
+            >
+                See Dispute Comment
+            </button>
+        )}
         {onViewDetails && (
           <button className="link-btn" onClick={() => onViewDetails(job)}>
             View Details
