@@ -34,8 +34,7 @@ Platforma sprendžia pasitikėjimo problemą tarp nepažįstamų žmonių. Pinig
 ## Sekų Diagrama (Sequence Diagram)
 Diagrama vaizduoja sąveiką tarp vartotojo sąsajos, kontrakto ir Blockchain tinklo.
 
-![Sekų diagrama](diagrama.png)
-> *[čia galėtų būti diagrama]*
+<img width="6265" height="7060" alt="Mermaid Chart - Create complex, visual diagrams with text -2025-12-14-173524" src="https://github.com/user-attachments/assets/754e748d-4fc9-4919-b876-80eb0c85d7e5" />
 
 ## Išmanioji Sutartis (Smart Contract)
 Sutartis įgyvendinta `Solidity` kalba. Žemiau pateikiamas pagrindinio kodo fragmentas ir failų struktūra.
