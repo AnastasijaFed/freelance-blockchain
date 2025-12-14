@@ -31,10 +31,14 @@ Platforma sprendžia pasitikėjimo problemą tarp nepažįstamų žmonių. Pinig
 4.  **Atmetimo atvejis:** Jei atliktas darbas netinka, Užsakovas pasirenka ginčą (`toggleDispute`) – darbas grąžinamas vykdytojui pataisymui.
 5.  **Sėkmingas atvejis:** Kai Užsakovas patikrina kokybę ir patvirtina (`approveJob`) – kontraktas perveda lėšas vykdytojui.
 
+---
+
 ## Sekų Diagrama (Sequence Diagram)
 Diagrama vaizduoja sąveiką tarp vartotojo sąsajos, kontrakto ir Blockchain tinklo.
 
 <img width="6265" height="7060" alt="Mermaid Chart - Create complex, visual diagrams with text -2025-12-14-173524" src="https://github.com/user-attachments/assets/754e748d-4fc9-4919-b876-80eb0c85d7e5" />
+
+---
 
 ## Išmanioji Sutartis (Smart Contract)
 Sutartis įgyvendinta `Solidity` kalba. Žemiau pateikiamas pagrindinio kodo fragmentas ir failų struktūra.
@@ -88,6 +92,8 @@ Ginčo inicijavimas (Dispute):
     }
 ```
 
+---
+
 ## Testavimas Lokaliame Tinkle (Ganache)
 Sutartis sėkmingai ištestuota naudojant **Ganache** (lokalus Ethereum tinklas, Port 7545) ir **Truffle**.
 
@@ -102,6 +108,8 @@ Matyti sąskaitų balansų pokyčiai (nuskaičiuotas ETH už „Gas“ ir depozi
 > <img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/3a2537b7-3fd7-4343-8c69-3d26a4c0480b" />
 > <img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/448d5a82-de6f-4164-b72d-996b94f6e41a" />
 
+---
+
 ## Testavimas Viešajame Tinkle (Sepolia)
 Kontraktas buvo sėkmingai įkeltas į viešąjį **Sepolia Testnet** tinklą.
 
@@ -111,6 +119,8 @@ Kontraktas buvo sėkmingai įkeltas į viešąjį **Sepolia Testnet** tinklą.
 ![Etherscan logs](etherscan.png)
 > [Etherscan puslapio nuotrauka, kur matosi „Contract Creation“ ir transakcijos]
 
+---
+
 ## Vartotojo sąsaja (Front-End)
 Sukurta **React** aplikacija, leidžianti vartotojui valdyti procesus per naršyklę naudojant **MetaMask** piniginę.
 
@@ -118,7 +128,6 @@ Sukurta **React** aplikacija, leidžianti vartotojui valdyti procesus per naršy
 Vartotojas mato pasveikinimo langą ir gali prisijungti su pinigine.
 
 <img width="1919" height="928" alt="image" src="https://github.com/user-attachments/assets/9b8cb4b1-3564-4130-bc78-752f8ada72ef" />
-
 
 ### Darbo valdymas
 Client mato sukurtą darbą, o Freelancer gali jį priimti.
@@ -136,7 +145,9 @@ Client mato sukurtą darbą, o Freelancer gali jį priimti.
 <img width="1916" height="872" alt="image" src="https://github.com/user-attachments/assets/bff62fa7-19ee-46cb-9a3e-0b4550a11618" />
 <img width="1919" height="860" alt="image" src="https://github.com/user-attachments/assets/39fe20f3-ab7b-49f9-a3f2-9e0ce7989710" />
 
-## 8. Paleidimo Instrukcija (How to Run)
+---
+
+## Paleidimo Instrukcija (How to Run)
 
 Norint paleisti projektą savo kompiuteryje:
 
