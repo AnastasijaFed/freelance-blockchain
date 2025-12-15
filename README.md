@@ -152,8 +152,8 @@ Client mato sukurtą darbą, o Freelancer gali jį priimti.
 Norint paleisti projektą savo kompiuteryje:
 
 1.  **Paleiskite Ganache:**
-    * Nustatykite Port: `7545`
-    * Network ID: `5777`
+    * Nustatykite Port
+    * Network ID
 
 2.  **Įdiekite priklausomybes ir įkelkite kontraktą:**
     ```bash
