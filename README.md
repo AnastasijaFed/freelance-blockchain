@@ -111,13 +111,21 @@ Matyti sąskaitų balansų pokyčiai (nuskaičiuotas ETH už „Gas“ ir depozi
 ---
 
 ## Testavimas Viešajame Tinkle (Sepolia)
-Kontraktas buvo sėkmingai įkeltas į viešąjį **Sepolia Testnet** tinklą.
 
-* **Kontrakto adresas:** `0x...` **
-* **Etherscan nuoroda:** `https://sepolia.etherscan.io/address/...`
+Kad kontraktas taptų viešai prieinamas, buvo atlikti šie diegimo žingsniai:
 
-![Etherscan logs](etherscan.png)
-> [Etherscan puslapio nuotrauka, kur matosi „Contract Creation“ ir transakcijos]
+1.  **RPC Prieiga:** Sukurta paskyra „MetaMask Developer“ (Infura) platformoje, gautas unikalus API raktas (Endpoint) prieigai prie Sepolia tinklo.
+2.  **Lėšų Gavimas:** Naudojant „Google Cloud Web3 Faucet“, į testinę piniginę gauta **0.05 Sepolia ETH** dujų (Gas) mokesčiams padengti.
+3.  **Saugumas (`dotenv`):** Įdiegta `dotenv` biblioteka, skirta saugiam jautrių duomenų valdymui.
+4.  **Aplinkos Kintamieji:** Sukurtas `.env` failas (nekeliamas į GitHub), kuriame saugomi:
+    * `MNEMONIC`: MetaMask piniginės slaptoji frazė (Secret Recovery Phrase).
+    * `INFURA_KEY`: Infura API raktas.
+5.  **Konfigūracija:** `truffle-config.js` faile pridėta `sepolia` tinklo konfigūracija, naudojant `HDWalletProvider`.
+6.  **Migracija:** Kontraktas sėkmingai iškeltas į tinklą įvykdžius komandą:
+    ```bash
+    truffle migrate --network sepolia
+    ```
+<img width="1391" height="712" alt="image" src="https://github.com/user-attachments/assets/245d2539-22b8-4824-b770-a36e33cb2ca2" />
 
 ---
 
